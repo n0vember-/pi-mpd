@@ -1,3 +1,9 @@
 - name: installation
-  pacman: name=pulseaudio state=present update_cache=yes
+  pacman: name={{item}} state=present
+  with_items:
+    - pulseaudio
+    - pulseaudio-equalizer
+
+- name: configuration
+  lineinfile: dest=/etc/pulse/client.conf regexp='^ *(autospawn *= *).*$' line='\1yes' backrefs=yes owner=root group=root mode=644
 

@@ -1,5 +1,5 @@
 - name: installation
-  pacman: name={{item}} state=present update_cache=yes
+  pacman: name={{item}} state=present
   with_items:
     - mpd
     - mpc
