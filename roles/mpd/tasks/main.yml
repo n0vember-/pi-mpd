@@ -1,0 +1,21 @@
+- name: installation
+  pacman: name={{item}} state=present update_cache=yes
+  with_items:
+    - mpd
+    - mpc
+
+- name: group
+  group: name={{mpdGroup}} state=present
+
+- name: user
+  user: name={{mpdUser}} group={{mpdGroup}} createhome=no shell=/bin/false
+
+- name: music directory
+  file: path={{musicDir}} state=directory owner={{mpdUser}} group={{mpdGroup}} mode=755
+
+- name: configuration
+  template: src=etc/mpd.conf dest=/etc/mpd.conf owner=root group=root mode=644
+
+- name: service
+  service: name=mpd state=started enabled=yes
+

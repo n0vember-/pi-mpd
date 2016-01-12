@@ -1,0 +1,3 @@
+- name: installation
+  pacman: name=pulseaudio state=present update_cache=yes
+
