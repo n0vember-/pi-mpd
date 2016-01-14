@@ -1,0 +1,35 @@
+sudo parted -s /dev/sdb mklabel msdos
+sudo parted -s /dev/sdb mkpart primary fat32 2048s 100M
+sudo parted -s /dev/sdb mkpart primary 100M 100%
+sudo parted -s /dev/sdb set 1 boot on
+sudo mkfs.vfat /dev/sdb1
+sudo mkfs.ext4 /dev/sdb2
+mkdir boot root
+sudo mount /dev/sdb1 boot
+sudo mount /dev/sdb2 root
+curl -sLO http://archlinuxarm.org/os/ArchLinuxARM-rpi-2-latest.tar.gz
+sudo bsdtar -xpf ArchLinuxARM-rpi-2-latest.tar.gz -C root
+sudo mv root/boot/* boot
+sync
+sudo umount boot root
+
+# alarm/alarm
+# root/root
+
+ssh alarm@192.168.0.30
+su -
+passwd
+passwd alarm
+pacman -Syu
+reboot
+
+ssh alarm@192.168.0.30
+su -
+pacman -S sudo
+echo "alarm ALL=(root) NOPASSWD: ALL" > /etc/sudoers.d/alarm
+exit
+exit
+
+ssh-copy-id alarm@192.168.0.30
+
+
