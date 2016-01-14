@@ -2,5 +2,5 @@
   sudo: yes
   roles:
     - pulseaudio
-    - mpd
+#    - mpd
 
