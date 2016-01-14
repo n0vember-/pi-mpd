@@ -1,6 +1,7 @@
 - name: installation
   pacman: name={{item}} state=present
   with_items:
+    - mesa-libgl # sounds bad to me but dependencies...
     - mpd
     - mpc
 
@@ -8,7 +9,7 @@
   group: name={{mpdGroup}} state=present
 
 - name: user
-  user: name={{mpdUser}} group={{mpdGroup}} createhome=no shell=/bin/false
+  user: name={{mpdUser}} group={{mpdGroup}} groups=audio createhome=no shell=/bin/false
 
 - name: music directory
   file: path={{musicDir}} state=directory owner={{mpdUser}} group={{mpdGroup}} mode=755
