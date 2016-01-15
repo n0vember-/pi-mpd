@@ -2,8 +2,6 @@
   include: wpa_supplicant.yml
 
 - name: creates wlan configurations
-  template: src=etc/systemd/network/wireless.network dest=/etc/systemd/network/{{item}}.network
-  with_items: ansible_interfaces
-  when: item | match('wl.*')
-  notify: network restart
+  copy: src=etc/systemd/network/wireless.network dest=/etc/systemd/network/wireless.network owner=root group=root mode=644
+#  notify: network restart
 
