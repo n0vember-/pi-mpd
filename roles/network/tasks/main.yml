@@ -1,6 +1,11 @@
 - name: wpa_supplicant configuration
   include: wpa_supplicant.yml
 
+- name: installation
+  pacman: name={{item}} state=present
+  with_items:
+    - wireless_tools
+
 - name: creates wlan configurations
   copy: src=etc/systemd/network/wireless.network dest=/etc/systemd/network/wireless.network owner=root group=root mode=644
 #  notify: network restart

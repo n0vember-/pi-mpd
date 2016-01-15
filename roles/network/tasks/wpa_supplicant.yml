@@ -3,6 +3,15 @@
   with_items:
     - wpa_supplicant
 
+# following point aim at the use of specific driver for my particular wifi card
+- name: wpa_supplicant service custom configuration
+  lineinfile: dest=/usr/lib/systemd/system/wpa_supplicant@.service regexp='^(ExecStart=.* -i%I)$' line='\1 -Dwext' backrefs=yes
+  register: wpa_modif
+
+- name: daemon reload
+  shell: systemctl daemon-reload
+  when: wpa_modif|changed
+
 - name: variables verification
   fail: msg="ansible should have been launched whith option -e 'wifiSsid=xxx wifiPass=xxx'"
   when: wifiSsid is not defined or wifiPass is not defined
@@ -19,8 +28,7 @@
   when: item | match('wl.*')
 
 - name: service enable
-  service: name={{item}} state=started enabled=yes
-  with_items:
-    - wpa_supplicant
-
+  service: name=wpa_supplicant@{{item}}.service state=started enabled=yes
+  with_items: ansible_interfaces
+  when: item | match('wl.*')
 
