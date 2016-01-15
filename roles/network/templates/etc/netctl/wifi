@@ -1,7 +1,0 @@
-Description='wifi for {{item}}'
-Interface={{item}}
-Connection=wireless
-Security=wpa-config
-WPAConfigFile='/etc/wpa_supplicant/wpa_supplicant.conf'
-IP=no
-IP6=no

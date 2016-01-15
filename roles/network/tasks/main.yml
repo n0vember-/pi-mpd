@@ -1,27 +1,3 @@
-- name: installation
-  pacman: name={{item}} state=present
-  with_items:
-    - wpa_supplicant
-    - dhcpcd
-
-- name: service enable (use wpa_passphrase to configure before start)
-  service: name=wpa_supplicant enabled=yes
-  with_items:
-    - wpa_supplicant
-    - dhcpcd
-
-- name: wpa_supplicant device configuration file
-  file: src=/etc/wpa_supplicant/wpa_supplicant.conf dest=/etc/wpa_supplicant/wpa_supplicant-{{item}}.conf owner=root group=root mode=644 state=link
-  with_items: ansible_interfaces
-  when: item | match('wl.*')
-
-- name: netctl conf file
-  template: src=etc/netctl/wifi dest=/etc/netctl/wifi_{{item}} owner=root group=root mode=600
-  with_items: ansible_interfaces
-  when: item | match('wl.*')
-
-- name: netctl services
-  service: name=netctl@wifi_{{item}} enabled=yes
-  with_items: ansible_interfaces
-  when: item | match('wl.*')
+- name: wpa_supplicant configuration
+  include: wpa_supplicant.yml
 

@@ -1,0 +1,26 @@
+- name: installation
+  pacman: name={{item}} state=present
+  with_items:
+    - wpa_supplicant
+
+- name: variables verification
+  fail: msg="ansible should have been launched whith option -e 'wifiSsid=xxx wifiPass=xxx'"
+  when: wifiSsid is not defined or wifiPass is not defined
+
+- name: wpa_supplicant.conf creation
+  shell: wpa_passphrase {{wifiSsid}} {{wifiPass}} | grep -v "#psk" > /etc/wpa_supplicant/wpa_supplicant.conf
+
+- name: wpa_supplicant device configuration file permissions
+  file: path=/etc/wpa_supplicant/wpa_supplicant.conf owner=root group=root mode=600
+
+- name: wpa_supplicant device configuration file
+  file: src=/etc/wpa_supplicant/wpa_supplicant.conf dest=/etc/wpa_supplicant/wpa_supplicant-{{item}}.conf owner=root group=root mode=644 state=link
+  with_items: ansible_interfaces
+  when: item | match('wl.*')
+
+- name: service enable (use wpa_passphrase to configure before start)
+  service: name={{item}} state=started enabled=yes
+  with_items:
+    - wpa_supplicant
+
+
