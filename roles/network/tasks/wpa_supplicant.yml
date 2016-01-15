@@ -18,7 +18,7 @@
   with_items: ansible_interfaces
   when: item | match('wl.*')
 
-- name: service enable (use wpa_passphrase to configure before start)
+- name: service enable
   service: name={{item}} state=started enabled=yes
   with_items:
     - wpa_supplicant
