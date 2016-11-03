@@ -1,8 +1,9 @@
 [all]
-pi-mpd ansible_python_interpreter=python2
+pi-mpd
+#ansible_python_interpreter=python2
 
-[all:vars]
-musicDir=/srv/music
-mpdUser=mpd
-mpdGroup=mpd
+#[all:vars]
+#musicDir=/srv/music
+#mpdUser=mpd
+#mpdGroup=mpd
 
