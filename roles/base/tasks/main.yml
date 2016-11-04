@@ -1,2 +1,25 @@
 - name: system update
   pacman: upgrade=yes
+
+- name: set hostname
+  copy: content="pi-mpd" dest=/etc/hostname owner=root group=root mode=0644
+
+- name: disable ipv6 in kernel
+  sysctl: name={{item.name}} value={{item.value}}
+  with_items:
+    - { name: net.ipv6.conf.all.disable_ipv6, value: 1 }
+
+- name: disable ipv6 in ssh
+  lineinfile: dest=/etc/ssh/sshd_config regexp='^#*(AddressFamily).*' line='\1 inet' backrefs=yes
+  notify:
+    - systemctl reload sshd
+
+- name: resolved.conf
+  lineinfile: dest=/etc/systemd/resolved.conf regexp='^#*(LLMNR=).*$' line='\1no' backrefs=yes
+  notify:
+    - systemctl restart systemd-resolved
+
+- name: put iptables conf in place
+  copy: src=etc/iptables/iptables.rules dest=/etc/iptables/iptables.rules owner=root group=root mode=0644
+  notify:
+    - systemctl restart iptables
