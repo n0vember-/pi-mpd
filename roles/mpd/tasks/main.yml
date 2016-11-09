@@ -2,17 +2,21 @@
   pacman: name={{item}} state=present
   with_items:
     - mesa-libgl # sounds bad to me but dependencies...
+    - libx264
     - mpd
     - mpc
 
 - name: group
-  group: name={{mpdGroup}} state=present
+  group: name=mpd state=present
 
 - name: user
-  user: name={{mpdUser}} group={{mpdGroup}} groups=audio createhome=no shell=/bin/false
+  user: name=mpd group=mpd groups=audio createhome=yes shell=/bin/bash
+
+- name: set up mpd user xorg environment
+  include: xorg.yml
 
 - name: music directory
-  file: path={{musicDir}} state=directory owner={{mpdUser}} group={{mpdGroup}} mode=755
+  file: path=/srv/music state=directory owner=mpd group=mpd mode=755
 
 - name: configuration
   template: src=etc/mpd.conf dest=/etc/mpd.conf owner=root group=root mode=644

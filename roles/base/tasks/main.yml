@@ -1,5 +1,8 @@
 - name: system update
-  pacman: upgrade=yes
+  pacman: update_cache=yes upgrade=yes
+
+- name: package installation
+  pacman: name=bash-completion
 
 - name: set hostname
   copy: content="pi-mpd" dest=/etc/hostname owner=root group=root mode=0644
@@ -23,3 +26,9 @@
   copy: src=etc/iptables/iptables.rules dest=/etc/iptables/iptables.rules owner=root group=root mode=0644
   notify:
     - systemctl restart iptables
+
+- name: ensure alarm user is removed
+  user: name=alarm state=absent
+
+- name: remove alarm home dir
+  file: path=/home/alarm state=absent
