@@ -9,3 +9,9 @@
 
 - name: configuration
   lineinfile: dest=/etc/pulse/client.conf regexp='^ *(autospawn *= *).*$' line='\1yes' backrefs=yes owner=root group=root mode=644
+
+- name: config.txt
+  lineinfile: dest=/boot/config.txt line='dtoverlay=hifiberry-dac' mode=0755 owner=root group=root
+
+#- name: asound.conf
+#  copy: src=etc/asound.conf dest=/etc/asound.conf mode=0644 owner=root group=root

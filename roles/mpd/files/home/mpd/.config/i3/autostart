@@ -13,7 +13,6 @@ logFile=/tmp/i3.autostart.log
 xhost +localhost >>${logFile} 2>&1
 setxkbmap -layout fr-latin9 >>${logFile} 2>&1
 numlockx >>${logFile} 2>&1
-pulseaudio --start >>${logFile} 2>&1
 
 # daemons
 runProc "dunst" && nohup dunst >>${logFile} 2>&1 </dev/null &
