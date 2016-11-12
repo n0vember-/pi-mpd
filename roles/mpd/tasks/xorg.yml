@@ -22,16 +22,14 @@
     - home/mpd/.config/i3/autostart
 
 - name: set executable
-  file: path={{item}} mode=0755
+  file: path={{item}} mode=0755 owner=mpd group=mpd
   with_items:
     - /home/mpd/.xinitrc
     - /home/mpd/.config/i3/autostart
 
 - name: setup nodm to launch mpd session
-  shell: sed -i 's/{user}/mpd/g' /etc/nodm.conf
-
-- name: nodm.conf mode
-  file: path=/etc/nodm.conf mode=0755
+  file: src=etc/nodm.conf dest=/etc/nodm.conf mode=0755 owner=root group=root
+  notify : systemctl restart nodm
 
 - name: activation
-  service: name=nodm state=started
+  service: name=nodm enabled=yes

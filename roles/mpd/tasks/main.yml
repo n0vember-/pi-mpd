@@ -20,7 +20,8 @@
 
 - name: configuration
   template: src=etc/mpd.conf dest=/etc/mpd.conf owner=root group=root mode=644
+  notify: systemctl restart mpd
 
 - name: service
-  service: name=mpd state=started enabled=yes
+  service: name=mpd enabled=yes
 

@@ -1,9 +1,6 @@
 - hosts: all
   user: root
   roles:
-#    - base
-#    - pulseaudio
+    - base
+    - pulseaudio
     - mpd
-
-#    - network
-
