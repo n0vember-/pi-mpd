@@ -25,3 +25,8 @@
 - name: service
   service: name=mpd enabled=yes
 
+- name: working dir tree
+  file: path=/var/lib/mpd owner=mpd group=mpd mode=755 state=directory
+  with_items:
+    - /var/lib/mpd
+    - /var/lib/mpd/playlists
