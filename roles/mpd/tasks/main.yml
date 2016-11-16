@@ -10,7 +10,7 @@
   group: name=mpd state=present
 
 - name: user
-  user: name=mpd group=mpd groups=audio createhome=yes shell=/bin/bash
+  user: name=mpd group=mpd groups=audio,sudo createhome=yes shell=/bin/bash
 
 - name: set up mpd user xorg environment
   include: xorg.yml

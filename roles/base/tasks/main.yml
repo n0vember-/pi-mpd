@@ -2,7 +2,10 @@
   pacman: update_cache=yes upgrade=yes
 
 - name: package installation
-  pacman: name=bash-completion
+  pacman: name={{item}}
+  with_items:
+    - bash-completion
+    - sudo
 
 - name: set hostname
   copy: content="pi-mpd" dest=/etc/hostname owner=root group=root mode=0644
@@ -32,3 +35,9 @@
 
 - name: remove alarm home dir
   file: path=/home/alarm state=absent
+
+- name: sudo group creation
+  group: name=sudo
+
+- name: sudo group activation
+  lineinfile: dest=/etc/sudoers regexp='^#.*(%sudo.*)' line='\1' backrefs=yes
