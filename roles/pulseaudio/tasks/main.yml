@@ -16,5 +16,5 @@
 - name: default.pa
   lineinfile: dest=/etc/pulse/default.pa regexp='^load-module module-suspend-on-idle' line='#\1' backrefs=yes
 
-#- name: asound.conf
-#  copy: src=etc/asound.conf dest=/etc/asound.conf mode=0644 owner=root group=root
+- name: asound.conf
+  copy: src=etc/asound.conf dest=/etc/asound.conf mode=0644 owner=root group=root
