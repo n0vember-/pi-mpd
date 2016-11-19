@@ -2,5 +2,5 @@
   user: root
   roles:
     - base
-    - pulseaudio
+    - audio
     - mpd

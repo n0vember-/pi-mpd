@@ -22,10 +22,10 @@
   template: src=etc/mpd.conf dest=/etc/mpd.conf owner=root group=root mode=644
   notify: systemctl restart user mpd
 
-- name: pulseaudio service
-  #service: name=pulseaudio enabled=yes arguments="--user"
-  shell: systemctl --user enable pulseaudio
-  become: mpd
+#- name: pulseaudio service
+#  #service: name=pulseaudio enabled=yes arguments="--user"
+#  shell: systemctl --user enable pulseaudio
+#  become: mpd
 
 - name: service
   #service: name=mpd enabled=yes arguments="--user"
