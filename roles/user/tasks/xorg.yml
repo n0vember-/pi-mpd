@@ -30,7 +30,7 @@
     - /home/mpd/.config/i3/autostart
 
 - name: setup nodm to launch mpd session
-  template: src=etc/nodm.conf dest=/etc/nodm.conf mode=0755 owner=root group=root
+  copy: src=etc/nodm.conf dest=/etc/nodm.conf mode=0755 owner=root group=root
   notify : systemctl restart nodm
 
 - name: activation
