@@ -1,4 +1,0 @@
-- name: systemctl restart user mpd
-  #service: name=mpd state=restarted arguments="--user"
-  shell: systemctl --user restart mpd
-  become: mpd

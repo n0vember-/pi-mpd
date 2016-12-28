@@ -1,0 +1,75 @@
+#!/bin/bash
+
+noDownload=0
+verboseMode=1
+dryRun=
+volumio=1
+volumioUrl="http://updates.volumio.org/pi/volumio/2.041/volumio-2.041-2016-12-12-pi.img.zip"
+
+umountDev() {
+  sdCard=$1
+  sleep 1
+  mount | grep /dev/${sdCard} | sed "s/ .*//" | while read device
+  do
+    $dryRun sudo umount $device
+  done
+}
+
+usage() {
+  echo "$@" >&2
+  echo "usage: $(basename $0) [-h] [-q] [-d] device
+  -h = displays this help
+  -q = quiet
+  -d = dry run, only give commands
+  device = device to prepare (sdb, sdc... do not specify /dev)" >&2
+  exit
+}
+
+msg() {
+  [ $verboseMode -eq 1 ] && echo "$@"
+}
+
+dryRun="eval"
+while getopts nqi:hd name
+do
+  case $name in
+    q)
+      verboseMode=0
+      ;;
+    d)
+      dryRun=echo
+      ;;
+    h)
+      usage
+      ;;
+  esac
+done
+
+shift $(($OPTIND-1))
+
+if [ $# -ne 1 ] ; then
+  usage "device name is mandatory"
+fi
+
+sdCard=$1
+
+if [ ! -b /dev/$sdCard ] ; then
+  usage "/dev/$sdCard is not a block device"
+fi
+
+umountDev $sdCard
+msg "download"
+[ -f volumio.zip -o -f volumio.img ] && msg "download not needed" || $dryRun "curl -o volumio.zip -L $volumioUrl"
+msg
+msg "uncompressing"
+$dryRun "unzip volumio.zip"
+$dryRun "rm volumio.zip"
+$dryRun "mv *volumio*img volumio.img"
+msg
+msg "writing"
+$dryRun "sudo dd if=volumio.img of=/dev/${sdCard} bs=1M status=progress"
+$dryRun "sudo sync"
+umountDev $sdCard
+msg
+msg "done"
+

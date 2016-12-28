@@ -1,0 +1,4 @@
+- copy: content="pi-mpd" dest=/etc/hostname owner=root group=root mode=0644
+  notify: hostname reload
+
+- replace: dest=/etc/hosts regexp='(\s+)volumeio(\s+.*)?$' replace='\1pi-mpd\2'
