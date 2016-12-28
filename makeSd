@@ -61,10 +61,10 @@ umountDev $sdCard
 msg "download"
 [ -f volumio.zip -o -f volumio.img ] && msg "download not needed" || $dryRun "curl -o volumio.zip -L $volumioUrl"
 msg
-msg "uncompressing"
-$dryRun "unzip volumio.zip"
-$dryRun "rm volumio.zip"
-$dryRun "mv *volumio*img volumio.img"
+[ -f volumio.zip ] && msg "uncompressing"
+[ -f volumio.zip ] && $dryRun "unzip volumio.zip"
+[ -f volumio.zip ] && $dryRun "rm volumio.zip"
+$dryRun "mv *volumio*img volumio.img 2>/dev/null"
 msg
 msg "writing"
 $dryRun "sudo dd if=volumio.img of=/dev/${sdCard} bs=1M status=progress"
