@@ -1,7 +1,0 @@
-- hosts: all
-  user: root
-  roles:
-    - base
-    - user
-    - audio
-    - mpd

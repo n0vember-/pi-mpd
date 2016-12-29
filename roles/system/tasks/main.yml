@@ -1,8 +1,0 @@
-- apt: update_cache=yes
-- apt: name=python-apt
-- apt: name=binutils
-
-# rm -r /var/tmp/mkinitramfs_*
-# rm -r /var/tmp/.rpi-update
-
-- shell: rpi-update

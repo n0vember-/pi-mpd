@@ -1,0 +1,48 @@
+- apt: update_cache=yes cache_valid_time=3600
+
+- apt: name=xserver-xorg-video-fbdev 
+- apt: name=xserver-xorg-video-vesa 
+- apt: name=xinit
+
+- apt: name=nodm 
+- lineinfile:
+    dest: /etc/default/nodm
+    backrefs: yes 
+    regexp: '^({{item.variable}})=.*$'
+    line: '\1={{item.value}}'
+  with_items:
+    - { variable: NODM_ENABLED, value: true }
+    - { variable: NODM_USER, value: volumio }
+    - { variable: NODM_FIRST_VT, value: 1 }
+  notify:
+    - restart nodm
+- service: name=nodm enabled=yes
+
+- apt: name=i3 
+- apt: name=uzbl 
+- file:
+    path: "{{item}}"
+    state: directory
+    owner: volumio
+    group: volumio
+    mode: 0755
+  with_items:
+    - /home/volumio/.config
+    - /home/volumio/.config/i3
+- file:
+    path: /home/volumio/.i3
+    state: absent
+  notify:
+    - restart nodm
+- copy:
+    src: "{{item.src}}"
+    dest: "{{item.dest}}"
+    owner: volumio
+    group: volumio
+    mode: "{{item.mode}}"
+  with_items:
+    - { src: xinitrc, dest: /home/volumio/.xinitrc, mode: 644 }
+    - { src: i3config, dest: /home/volumio/.config/i3/config, mode: 644 }
+    - { src: i3autostart, dest: /home/volumio/.config/i3/autostart, mode: 755 }
+  notify:
+    - restart nodm

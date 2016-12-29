@@ -1,0 +1,6 @@
+#!/bin/bash
+
+xset -dpms
+xset s off
+killall uzbl-browser
+uzbl-browser http://localhost:3000 &

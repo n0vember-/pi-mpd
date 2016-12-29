@@ -1,2 +1,0 @@
-- name: hostname reload
-  shell: hostname -F /etc/hostname
