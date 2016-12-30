@@ -46,3 +46,13 @@
     - { src: i3autostart, dest: /home/volumio/.config/i3/autostart, mode: 755 }
   notify:
     - restart nodm
+
+- copy:
+    src: "{{item}}"
+    dest: "/data/backgrounds/{{item}}"
+    owner: volumio
+    group: volumio
+    mode: 0644
+  with_items:
+    - albizia.jpg
+    - thumbnail-albizia.jpg
