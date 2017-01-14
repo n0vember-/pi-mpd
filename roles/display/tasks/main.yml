@@ -18,8 +18,28 @@
     - restart nodm
 - service: name=nodm enabled=yes
 
-- apt: name=i3 
 - apt: name=uzbl 
+- file:
+    path: "{{item}}"
+    state: directory
+    owner: volumio
+    group: volumio
+    mode: 0755
+  with_items:
+    - /home/volumio/.config
+    - /home/volumio/.config/uzbl
+- copy:
+    src: "{{item.src}}"
+    dest: "{{item.dest}}"
+    owner: volumio
+    group: volumio
+    mode: "{{item.mode}}"
+  with_items:
+    - { src: uzblconfig, dest: /home/volumio/.config/uzbl/config, mode: 644 }
+  notify:
+    - restart nodm
+
+- apt: name=i3 
 - file:
     path: "{{item}}"
     state: directory
@@ -56,3 +76,15 @@
   with_items:
     - albizia.jpg
     - thumbnail-albizia.jpg
+- replace:
+    dest: /volumio/http/www/styles/app-cf915220c8.css
+    regexp: '{{item.old}}'
+    replace: '{{item.new}}'
+    backup: yes
+  with_items:
+    - { old: 54c698, new: d21212 }
+    - { old: 3aad7f, new: ad3a3a }
+    - { old: 277455, new: 742727 }
+  notify:
+    - restart nodm
+
